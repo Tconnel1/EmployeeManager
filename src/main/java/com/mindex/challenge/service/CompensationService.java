@@ -5,7 +5,6 @@ import com.mindex.challenge.data.Compensation;
 import java.util.List;
 
 public interface CompensationService {
-    Compensation create(String employeeId);
+    Compensation create(Compensation compensation);
     Compensation read(String id);
-    List<Compensation> readAll();
 }

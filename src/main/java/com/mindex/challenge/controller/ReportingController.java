@@ -16,7 +16,7 @@ public class ReportingController {
     @Autowired
     private ReportingServiceImpl reportingServiceImpl;
 
-    @GetMapping("/employee/reporting-structure/{employeeId}")
+    @GetMapping("/reporting/{employeeId}")
     public ReportingStructure getReportingStructureForEmployee(@PathVariable String employeeId) {
         LOG.debug("Retrieving reporting structure for employeeId: [{}]", employeeId);
 

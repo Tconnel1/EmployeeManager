@@ -11,11 +11,11 @@ public class Compensation {
 
     }
 
-    public void setEmployee(String employeeId) {
+    public void setEmployeeId(String employeeId) {
         this.employeeId = employeeId;
     }
 
-    public String getEmployee() {
+    public String getEmployeeId() {
         return employeeId;
     }
 
