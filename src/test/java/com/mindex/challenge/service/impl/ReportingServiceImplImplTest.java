@@ -3,6 +3,7 @@ package com.mindex.challenge.service.impl;
 import com.mindex.challenge.dao.EmployeeRepository;
 import com.mindex.challenge.data.Employee;
 import com.mindex.challenge.data.ReportingStructure;
+import org.junit.Before;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,37 +28,30 @@ public class ReportingServiceImplImplTest {
     @Autowired
     ReportingServiceImpl reportingServiceImpl;
 
-    @Test
-    public void getReportingStructureForId_onlyDirectReports_returnReportingStructure() {
-        Employee testEmployee = new Employee();
+    private final Employee testEmployee = new Employee();
+    private final Employee testEmployee1 = new Employee();
+    private final Employee testEmployee2 = new Employee();
+    private final Employee testEmployee3 = new Employee();
+    private final Employee testEmployee4 = new Employee();
+    @Before
+    public void setup() {
         testEmployee.setEmployeeId("John");
         testEmployee.setDirectReports(createReportTree());
 
-        when(employeeRepository.findByEmployeeId(anyString())).thenReturn(testEmployee);
+        when(employeeRepository.findByEmployeeId("John")).thenReturn(testEmployee);
+        when(employeeRepository.findByEmployeeId("Ted")).thenReturn(testEmployee1);
+        when(employeeRepository.findByEmployeeId("Bill")).thenReturn(testEmployee2);
+        when(employeeRepository.findByEmployeeId("Geoff")).thenReturn(testEmployee3);
+        when(employeeRepository.findByEmployeeId("Aaron with an a")).thenReturn(testEmployee4);
+    }
 
+    @Test
+    public void getReportingStructureForId_onlyDirectReports_returnReportingStructure() {
         ReportingStructure result = reportingServiceImpl.getReportingStructureForId("John");
         assertEquals(4, result.getNumberOfReports());
     }
 
-    @Test
-    public void getReportingStructureForId_directAndSubReports_returnReportingStructure() {
-        Employee testEmployee = new Employee();
-        testEmployee.setEmployeeId("John");
-        testEmployee.setDirectReports(createReportTree());
-        testEmployee.getDirectReports().forEach(employee -> employee.setDirectReports(createReportTree()));
-
-        when(employeeRepository.findByEmployeeId(anyString())).thenReturn(testEmployee);
-
-        ReportingStructure result = reportingServiceImpl.getReportingStructureForId("John");
-        assertEquals(20, result.getNumberOfReports());
-    }
-
     private List<Employee> createReportTree() {
-        Employee testEmployee1 = new Employee();
-        Employee testEmployee2 = new Employee();
-        Employee testEmployee3 = new Employee();
-        Employee testEmployee4 = new Employee();
-
         testEmployee1.setEmployeeId("Ted");
         testEmployee1.setDirectReports(Collections.emptyList());
         testEmployee2.setEmployeeId("Bill");
